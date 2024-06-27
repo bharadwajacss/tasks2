@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Train Animation</title>
+    <style>
+        .train-container {
+            width: 100%;
+            height: 200px;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .train {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: left 0.1s ease-in-out;
+            padding: 0;
+            /* add this to remove padding */
+            border: none;
+            /* add this to remove border */
+            display: block;
+            /* add this to remove any default inline element spacing */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="train-container">
+        <img src="train.png" class="train">
+    </div>
+    <button id="start-btn">Start</button>
+    <button id="stop-btn">Stop</button>
+
+    <script>
+        const train = document.querySelector('.train');
+        const startBtn = document.querySelector('#start-btn');
+        const stopBtn = document.querySelector('#stop-btn');
+        const trainContainer = document.querySelector('.train-container');
+
+        let trainMoving = false;
+        let trainPosition = 0;
+
+        startBtn.addEventListener('click', () => {
+            trainMoving = true;
+            moveTrain();
+        });
+
+        stopBtn.addEventListener('click', () => {
+            trainMoving = false;
+        });
+
+        function moveTrain() {
+            if (trainMoving) {
+                trainPosition += 5; // move train 5px to the right
+                train.style.left = `${trainPosition}px`;
+
+                // Check if the train has reached the end of the screen
+                if (trainPosition + train.offsetWidth > trainContainer.offsetWidth) {
+                    trainMoving = false;
+                    trainPosition = 0; // Reset the train to the start
+                    train.style.left = `${trainPosition}px`;
+                } else {
+                    requestAnimationFrame(moveTrain);
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
